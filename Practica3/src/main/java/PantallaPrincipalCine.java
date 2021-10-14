@@ -33,9 +33,15 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 18)); // NOI18N
         jLabel1.setText("Cine");
 
-        btnMosPeliculas.setText("Mostrar Pelicula");
+        btnMosPeliculas.setText("Mostrar Tablas");
+        btnMosPeliculas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMosPeliculasActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("2");
 
@@ -46,23 +52,24 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnMosPeliculas)
-                .addGap(81, 81, 81)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnMosPeliculas)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton3))
-                    .addComponent(jLabel1))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMosPeliculas)
                     .addComponent(jButton2)
@@ -72,6 +79,12 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnMosPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosPeliculasActionPerformed
+        // TODO add your handling code here:
+        MostrarTabla MosTab = new MostrarTabla(this,rootPaneCheckingEnabled);
+        MosTab.setVisible(true);
+    }//GEN-LAST:event_btnMosPeliculasActionPerformed
 
     /**
      * @param args the command line arguments
