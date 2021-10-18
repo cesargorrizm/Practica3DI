@@ -43,7 +43,12 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("2");
+        jButton2.setText("Añadir Director Sala o Tematica");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Añadir Pelicula");
 
@@ -56,14 +61,14 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnMosPeliculas)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
-                        .addGap(18, 18, 18)
+                        .addGap(40, 40, 40)
                         .addComponent(jButton3))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(143, 143, 143)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,6 +90,12 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
         MostrarTabla MosTab = new MostrarTabla(this,rootPaneCheckingEnabled);
         MosTab.setVisible(true);
     }//GEN-LAST:event_btnMosPeliculasActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        InsertarSalaDirectorTematica indes= new InsertarSalaDirectorTematica(this, rootPaneCheckingEnabled);
+        indes.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
