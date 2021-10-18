@@ -1,3 +1,9 @@
+
+import com.mysql.cj.xdevapi.Result;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Statement;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,13 +16,16 @@
  */
 public class MostrarTabla extends javax.swing.JDialog {
 private PantallaPrincipalCine pp;
+Conectar conectar = null;
     /**
      * Creates new form MostrarTabla
      */
     public MostrarTabla(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         pp=(PantallaPrincipalCine)parent;
+        conectar = new Conectar();
         initComponents();
+        
     }
 
     /**
@@ -51,12 +60,32 @@ private PantallaPrincipalCine pp;
         jScrollPane1.setViewportView(jTablaMostrar);
 
         jButton1.setText("Peliculas");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Directores");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Sala");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Tematica");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,47 +118,146 @@ private PantallaPrincipalCine pp;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(new String[]{"Id Pelicula","Titulo","director","Fecha de Proyeccion","Año Estreno","Tematica","Precio","Sala"});
+        
+        Statement ps = null;
+        String sql;
+        
+        Connection cone = conectar.getConnection();
+        
+        ResultSet rs = null;
+        
+        sql= "SELECT p.idPelicula, p.titulo, d.nombre, p.fechaProyeccion, p.añoEstreno, t.nombre, p.precioEntrada, s.nombre\n" +
+"FROM cine_di.pelicula p join cine_di.director d join cine_di.sala s join cine_di.tematica t\n" +
+"on p.director = d.idDirector and s.idSala = p.sala and t.idTematica = p.tematica;";
+        
+        try {
+            ps= cone.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+            
+            while(rs.next())
+            {
+            String[] total = new String[8];
+            total[0]= rs.getString("p.idPelicula").toString();
+            total[1]= rs.getString("p.titulo").toString();
+            total[2]= rs.getString("d.nombre").toString();
+            total[3]= rs.getString("p.fechaProyeccion").toString();
+            total[4]= rs.getString("p.añoEstreno").toString();
+            total[5]= rs.getString("t.nombre").toString();
+            total[6]= rs.getString("p.precioEntrada").toString();
+            total[7]= rs.getString("s.nombre").toString();
+            dtm.addRow(total);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jTablaMostrar.setModel(dtm);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(new String[]{"Id Director","Nombre","Apellidos","Fecha de Nacimiento"});
+        
+        Statement ps = null;
+        String sql;
+        
+        Connection cone = conectar.getConnection();
+        
+        ResultSet rs = null;
+        
+        sql= "SELECT * FROM cine_di.director";
+        
+        try {
+            ps= cone.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+            
+            while(rs.next())
+            {
+            String[] total = new String[4];
+            total[0]= rs.getString("idDirector").toString();
+            total[1]= rs.getString("nombre").toString();
+            total[2]= rs.getString("apellidos").toString();
+            total[3]= rs.getString("fechaNac").toString();
+            dtm.addRow(total);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jTablaMostrar.setModel(dtm);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(new String[]{"Id Sala","Nombre","Capacidad"});
+        
+        Statement ps = null;
+        String sql;
+        
+        Connection cone = conectar.getConnection();
+        
+        ResultSet rs = null;
+        
+        sql= "SELECT * FROM cine_di.sala";
+        
+        try {
+            ps= cone.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+            
+            while(rs.next())
+            {
+            String[] total = new String[4];
+            total[0]= rs.getString("idSala").toString();
+            total[1]= rs.getString("nombre").toString();
+            total[2]= rs.getString("capacidad").toString();
+            dtm.addRow(total);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jTablaMostrar.setModel(dtm);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+         DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setColumnIdentifiers(new String[]{"Id Tematica","Nombre"});
+        
+        Statement ps = null;
+        String sql;
+        
+        Connection cone = conectar.getConnection();
+        
+        ResultSet rs = null;
+        
+        sql= "SELECT * FROM cine_di.tematica";
+        
+        try {
+            ps= cone.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+            
+            while(rs.next())
+            {
+            String[] total = new String[4];
+            total[0]= rs.getString("idTematica").toString();
+            total[1]= rs.getString("nombre").toString();
+            
+            dtm.addRow(total);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        jTablaMostrar.setModel(dtm);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MostrarTabla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MostrarTabla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MostrarTabla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MostrarTabla.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                MostrarTabla dialog = new MostrarTabla(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
