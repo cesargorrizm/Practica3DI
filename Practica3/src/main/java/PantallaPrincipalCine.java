@@ -32,6 +32,7 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButtonMosDirectores = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +69,13 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Mostrar por Sala");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -76,7 +84,9 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnMosPeliculas)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnMosPeliculas)
+                            .addComponent(jButton4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -90,7 +100,7 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(143, 143, 143)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +114,8 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonMosDirectores)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton4))
                 .addContainerGap(174, Short.MAX_VALUE))
         );
 
@@ -113,7 +124,7 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
 
     private void btnMosPeliculasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMosPeliculasActionPerformed
         // TODO add your handling code here:
-        MostrarTabla MosTab = new MostrarTabla(this,rootPaneCheckingEnabled);
+        MostrarTabla MosTab = new MostrarTabla(this,true);
         MosTab.setVisible(true);
     }//GEN-LAST:event_btnMosPeliculasActionPerformed
 
@@ -134,6 +145,12 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
         BuscarporTematica bt= new BuscarporTematica(this, rootPaneCheckingEnabled);
         bt.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        BuscarporSala bs = new BuscarporSala(this, rootPaneCheckingEnabled);
+        bs.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,6 +192,7 @@ public class PantallaPrincipalCine extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonMosDirectores;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
