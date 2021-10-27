@@ -3,19 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author damA
  */
 public class InsertarPelicula extends javax.swing.JDialog {
-
+Conectar conectar = null;
     /**
      * Creates new form InsertarPelicula
      */
     public InsertarPelicula(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        conectar = new Conectar();
     }
 
     /**
@@ -41,6 +47,7 @@ public class InsertarPelicula extends javax.swing.JDialog {
         jSpinnerDirector = new javax.swing.JSpinner();
         jSpinnerTematica = new javax.swing.JSpinner();
         jSpinnerSala = new javax.swing.JSpinner();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -68,6 +75,13 @@ public class InsertarPelicula extends javax.swing.JDialog {
         jLabel7.setText("Precio Entrada");
 
         jTextFieldPrecioEntrada.setToolTipText("x.x");
+
+        jButton1.setText("Insertar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,8 +121,10 @@ public class InsertarPelicula extends javax.swing.JDialog {
                             .addComponent(jSpinnerSala, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(112, Short.MAX_VALUE))
+                        .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,8 +151,9 @@ public class InsertarPelicula extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(146, Short.MAX_VALUE))
+                    .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,49 +163,60 @@ public class InsertarPelicula extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldAñoEstrnoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         if (jTextFieldTitulo.getText().length()!=0 && jTextFieldFechaProyeccion.getText().length()!=0&&jTextFieldAñoEstrno.getText().length()!=0 && jTextFieldPrecioEntrada.getText().length()!=0 
+                && (Integer) jSpinnerDirector.getValue() > 0 && (Integer)jSpinnerSala.getValue() > 0 && (Integer) jSpinnerTematica.getValue() > 0) {
+            
+            try {
+              String titulo = jTextFieldTitulo.getText();
+              int director = (Integer)jSpinnerDirector.getValue();
+              String fechaPro= jTextFieldFechaProyeccion.getText();
+              String añoEstreno= jTextFieldAñoEstrno.getText();
+              int tematica = (Integer)jSpinnerTematica.getValue();
+              double precio =Double.parseDouble( jTextFieldPrecioEntrada.getText());
+              int sala = (Integer)jSpinnerSala.getValue();
+              
+            Connection cone = conectar.getConnection();
+            PreparedStatement ps= null;
+            String sql = "insert into cine_di.pelicula(titulo,director,fechaProyeccion,añoEstreno,tematica,precioEntrada,sala)"
+                    + "values(?,?,?,?,?,?,?);";
+                try {
+                ps= cone.prepareStatement(sql);
+                ps.setString(1,titulo );
+                ps.setInt(2,director );
+                ps.setString(3, fechaPro);
+                ps.setString(4,añoEstreno);
+                ps.setInt(5, tematica);
+                ps.setDouble(6, precio);
+                ps.setInt(7, sala);
+                ps.executeUpdate();
+                jTextFieldAñoEstrno.setText("");
+                jTextFieldFechaProyeccion.setText("");
+                jTextFieldPrecioEntrada.setText("");
+                jTextFieldTitulo.setText("");
+                jSpinnerDirector.setValue(0);
+                jSpinnerSala.setValue(0);
+                jSpinnerTematica.setValue(0);
+                } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,"Revisa los datos ","Faltan datos",JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,"Revisa los datos ","Faltan datos",JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }else{
+            JOptionPane.showMessageDialog(this,"No has rellenado uno de los  campos","Faltan datos",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InsertarPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InsertarPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InsertarPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InsertarPelicula.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                InsertarPelicula dialog = new InsertarPelicula(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
