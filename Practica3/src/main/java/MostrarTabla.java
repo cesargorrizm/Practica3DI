@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 /*
+
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -14,14 +16,15 @@ import java.sql.Statement;
  *
  * @author damA
  */
-public class MostrarTabla extends javax.swing.JDialog {
+public class MostrarTabla extends javax.swing.JFrame{
 private PantallaPrincipalCine pp;
+DefaultTableModel dtmP;
 Conectar conectar = null;
     /**
      * Creates new form MostrarTabla
      */
     public MostrarTabla(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+        
         pp=(PantallaPrincipalCine)parent;
         conectar = new Conectar();
         initComponents();
@@ -37,6 +40,9 @@ Conectar conectar = null;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTablaMostrar = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
@@ -44,7 +50,35 @@ Conectar conectar = null;
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
+        jPopupMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPopupMenu1MouseClicked(evt);
+            }
+        });
+
+        jMenuItem1.setText("Buscar Por Director");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Buscar Por Tematica");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseClicked(evt);
+            }
+        });
 
         jTablaMostrar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -57,6 +91,11 @@ Conectar conectar = null;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTablaMostrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablaMostrarMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTablaMostrar);
 
         jButton1.setText("Peliculas");
@@ -120,8 +159,8 @@ Conectar conectar = null;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here
-        DefaultTableModel dtm = new DefaultTableModel();
-        dtm.setColumnIdentifiers(new String[]{"Id Pelicula","Titulo","director","Fecha de Proyeccion","Año Estreno","Tematica","Precio","Sala"});
+        dtmP = new DefaultTableModel();
+        dtmP.setColumnIdentifiers(new String[]{"Id Pelicula","Titulo","director","Fecha de Proyeccion","Año Estreno","Tematica","Precio","Sala"});
         
         Statement ps = null;
         String sql;
@@ -149,12 +188,12 @@ Conectar conectar = null;
             total[5]= rs.getString("t.nombre").toString();
             total[6]= rs.getString("p.precioEntrada").toString();
             total[7]= rs.getString("s.nombre").toString();
-            dtm.addRow(total);
+            dtmP.addRow(total);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        jTablaMostrar.setModel(dtm);
+        jTablaMostrar.setModel(dtmP);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -254,6 +293,112 @@ Conectar conectar = null;
         jTablaMostrar.setModel(dtm);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jScrollPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseClicked
+        // TODO add your handling code here:
+     
+    }//GEN-LAST:event_jScrollPane1MouseClicked
+
+    private void jTablaMostrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablaMostrarMouseClicked
+        // TODO add your handling code here:
+        if (jTablaMostrar.getModel()== dtmP) {
+            
+        
+    
+        jPopupMenu1.setVisible(true);
+            jPopupMenu1.setLocation(evt.getLocationOnScreen());
+        }
+    }//GEN-LAST:event_jTablaMostrarMouseClicked
+
+    private void jPopupMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPopupMenu1MouseClicked
+        // TODO add your handling code here:
+         
+    }//GEN-LAST:event_jPopupMenu1MouseClicked
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        jPopupMenu1.setVisible(false);
+        var id = jTablaMostrar.getValueAt(jTablaMostrar.getSelectedRow(),2);
+        dtmP = new DefaultTableModel();
+        dtmP.setColumnIdentifiers(new String[]{"Id Pelicula","Titulo","director","Fecha de Proyeccion","Año Estreno","Tematica","Precio","Sala"});
+        
+        Statement ps = null;
+        String sql;
+        
+        Connection cone = conectar.getConnection();
+        
+        ResultSet rs = null;
+        
+        sql= "SELECT p.idPelicula, p.titulo, d.nombre, p.fechaProyeccion, p.añoEstreno, t.nombre, p.precioEntrada, s.nombre\n" +
+"FROM cine_di.pelicula p join cine_di.director d join cine_di.sala s join cine_di.tematica t\n" +
+"on p.director = d.idDirector and s.idSala = p.sala and t.idTematica = p.tematica where d.nombre like '"+id +"';";
+        
+        try {
+            ps= cone.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+            
+            while(rs.next())
+            {
+            String[] total = new String[8];
+            total[0]= rs.getString("p.idPelicula").toString();
+            total[1]= rs.getString("p.titulo").toString();
+            total[2]= rs.getString("d.nombre").toString();
+            total[3]= rs.getString("p.fechaProyeccion").toString();
+            total[4]= rs.getString("p.añoEstreno").toString();
+            total[5]= rs.getString("t.nombre").toString();
+            total[6]= rs.getString("p.precioEntrada").toString();
+            total[7]= rs.getString("s.nombre").toString();
+            dtmP.addRow(total);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Fallo al cargar los datos "); 
+        }
+        jTablaMostrar.setModel(dtmP);
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        jPopupMenu1.setVisible(false);
+        var id = jTablaMostrar.getValueAt(jTablaMostrar.getSelectedRow(),5);
+        dtmP = new DefaultTableModel();
+        dtmP.setColumnIdentifiers(new String[]{"Id Pelicula","Titulo","director","Fecha de Proyeccion","Año Estreno","Tematica","Precio","Sala"});
+        
+        Statement ps = null;
+        String sql;
+        
+        Connection cone = conectar.getConnection();
+        
+        ResultSet rs = null;
+        
+        sql= "SELECT p.idPelicula, p.titulo, d.nombre, p.fechaProyeccion, p.añoEstreno, t.nombre, p.precioEntrada, s.nombre\n" +
+"FROM cine_di.pelicula p join cine_di.director d join cine_di.sala s join cine_di.tematica t\n" +
+"on p.director = d.idDirector and s.idSala = p.sala and t.idTematica = p.tematica where t.nombre like '"+id +"';";
+        
+        try {
+            ps= cone.prepareStatement(sql);
+            rs=ps.executeQuery(sql);
+            
+            while(rs.next())
+            {
+            String[] total = new String[8];
+            total[0]= rs.getString("p.idPelicula").toString();
+            total[1]= rs.getString("p.titulo").toString();
+            total[2]= rs.getString("d.nombre").toString();
+            total[3]= rs.getString("p.fechaProyeccion").toString();
+            total[4]= rs.getString("p.añoEstreno").toString();
+            total[5]= rs.getString("t.nombre").toString();
+            total[6]= rs.getString("p.precioEntrada").toString();
+            total[7]= rs.getString("s.nombre").toString();
+            dtmP.addRow(total);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Fallo al cargar los datos "); 
+        }
+        jTablaMostrar.setModel(dtmP);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+       
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -264,6 +409,9 @@ Conectar conectar = null;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTablaMostrar;
     // End of variables declaration//GEN-END:variables
